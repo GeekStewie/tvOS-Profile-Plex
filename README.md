@@ -7,7 +7,7 @@ It enables:
 - **Support for 5.1 AAC, AC3, and EAC3 audio**
 - **Higher resolution limits (up to 3840x2160)**
 
-This can also resolve issue where Plex reports **"Your network is not fast enough"** on connections which are more than fast enough for the content.
+This can also resolve issue where Plex reports **"Your connection to the server is not fast enough..."** on connections which are more than fast enough for the content.
 
 ---
 
