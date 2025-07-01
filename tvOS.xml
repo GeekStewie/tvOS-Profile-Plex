@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Client name="tvOS">
+  <!-- Author: Custom profile for Apple TV 4K -->
+  <Settings>
+    <Setting name="DirectPlayStreamSelection" value="true" />
+    <Setting name="StreamUnselectedIncompatibleAudioStreams" value="true" />
+  </Settings>
+
+  <TranscodeTargets>
+    <!-- Transcode to H.264 for compatibility if needed -->
+    <VideoProfile protocol="hls" container="mpegts" codec="h264" audioCodec="aac,eac3,ac3" subtitleCodec="eia_608_embedded" context="streaming" />
+    <MusicProfile container="mp3" codec="mp3" />
+    <PhotoProfile container="jpeg" />
+  </TranscodeTargets>
+
+  <DirectPlayProfiles>
+    <!-- Allow Direct Play of MP4/MOV up to 4K -->
+    <VideoProfile container="mp4" codec="h264,hevc" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <VideoProfile container="mov" codec="h264,hevc" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <!-- Allow Direct Play of HLS content -->
+    <VideoProfile protocol="hls" container="mpegts" codec="h264,hevc" audioCodec="aac,ac3,eac3" />
+    <MusicProfile container="mp3" codec="mp3" />
+    <MusicProfile container="mp4" codec="aac" />
+    <PhotoProfile container="jpeg" />
+  </DirectPlayProfiles>
+
+  <CodecProfiles>
+    <!-- Allow 4K H.264 and HEVC up to 10-bit -->
+    <VideoCodec name="h264">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.bitDepth" value="8" />
+        <NotMatch name="video.separateFields" value="1" />
+      </Limitations>
+    </VideoCodec>
+    <VideoCodec name="hevc">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.bitDepth" value="10" />
+      </Limitations>
+    </VideoCodec>
+    <VideoAudioCodec name="aac">
+      <Limitations>
+        <UpperBound name="audio.channels" value="6" />
+      </Limitations>
+    </VideoAudioCodec>
+    <VideoAudioCodec name="ac3">
+      <Limitations>
+        <UpperBound name="audio.channels" value="6" />
+      </Limitations>
+    </VideoAudioCodec>
+    <VideoAudioCodec name="eac3">
+      <Limitations>
+        <UpperBound name="audio.channels" value="6" />
+      </Limitations>
+    </VideoAudioCodec>
+  </CodecProfiles>
+</Client>
