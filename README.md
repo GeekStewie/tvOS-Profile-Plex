@@ -29,6 +29,28 @@ Below are platform-specific instructions to replace your current tvOS profile.
 
 ### 🟢 Linux (Ubuntu / Debian)
 
+Run this on the Plex server:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/GeekStewie/tvOS-Profile-Plex/main/install.sh | sudo bash
+```
+
+The installer downloads the latest `tvOS.xml`, locates the current Plex `tvOS.xml`, validates the download, backs up the existing profile, installs the replacement, and restarts Plex Media Server.
+
+If Plex is installed in a non-standard location, pass the target path explicitly:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/GeekStewie/tvOS-Profile-Plex/main/install.sh | sudo env PROFILE_PATH=/path/to/tvOS.xml bash
+```
+
+To verify the installed profile:
+
+```bash
+grep -nE 'hevc|mpeg4|mjpeg|heif|tiff|flac|alac' /usr/lib/plexmediaserver/Resources/Profiles/tvOS.xml
+```
+
+#### Manual Install
+
 1. **Stop Plex Media Server:**
 
    ```bash
