@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Client name="iOS">
+  <!-- Author: Custom profile for modern iOS and iPadOS Plex clients -->
+  <Settings>
+    <Setting name="DirectPlayStreamSelection" value="true" />
+    <Setting name="StreamUnselectedIncompatibleAudioStreams" value="true" />
+  </Settings>
+
+  <TranscodeTargets>
+    <VideoProfile container="mp4" codec="h264" audioCodec="aac" subtitleCodec="mov_text" context="static" />
+    <VideoProfile protocol="hls" container="mpegts" codec="h264" audioCodec="aac,mp3" subtitleCodec="eia_608_embedded" context="streaming">
+      <Setting name="HlsExtraMultiChannelAudioStream" value="ac3" />
+    </VideoProfile>
+    <MusicProfile container="mp3" codec="mp3" />
+    <PhotoProfile container="jpeg" />
+  </TranscodeTargets>
+
+  <DirectPlayProfiles>
+    <!-- Plex reports .m4v and .m4a files as the MP4 container. -->
+    <VideoProfile container="mp4" codec="h264,hevc" audioCodec="aac,mp3,alac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <VideoProfile container="mov" codec="h264,hevc,prores" audioCodec="aac,mp3,alac,pcm,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <VideoProfile container="mp4,mov,3gp" codec="mpeg4" audioCodec="aac" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <VideoProfile container="mov,avi" codec="mjpeg" audioCodec="ulaw,pcm" />
+    <VideoProfile protocol="hls" container="mpegts" codec="h264,hevc" audioCodec="aac,mp3,ac3,eac3" />
+    <MusicProfile container="mp3" codec="mp3" />
+    <MusicProfile container="mp4" codec="aac,alac" />
+    <MusicProfile container="flac" codec="flac" />
+    <MusicProfile container="aiff" codec="pcm" />
+    <MusicProfile container="wav" codec="pcm" />
+    <MusicProfile container="au" codec="pcm" />
+    <MusicProfile container="caf" codec="aac,alac,pcm" />
+    <PhotoProfile container="heic" />
+    <PhotoProfile container="heif" />
+    <PhotoProfile container="jpeg" />
+    <PhotoProfile container="png" />
+    <PhotoProfile container="gif" />
+    <PhotoProfile container="tiff" />
+  </DirectPlayProfiles>
+
+  <CodecProfiles>
+    <VideoCodec name="h264">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.frameRate" value="60" />
+        <UpperBound name="video.bitDepth" value="8" />
+        <NotMatch name="video.separateFields" value="1" />
+      </Limitations>
+    </VideoCodec>
+    <VideoCodec name="hevc">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.frameRate" value="60" />
+        <UpperBound name="video.bitDepth" value="10" />
+      </Limitations>
+    </VideoCodec>
+    <VideoCodec name="prores">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.frameRate" value="60" />
+        <UpperBound name="video.bitDepth" value="12" />
+      </Limitations>
+    </VideoCodec>
+    <VideoCodec name="mpeg4">
+      <Limitations>
+        <UpperBound name="video.width" value="640" isRequired="true" />
+        <UpperBound name="video.height" value="480" isRequired="true" />
+        <UpperBound name="video.frameRate" value="30" />
+        <UpperBound name="video.bitrate" value="2500" />
+        <Match name="video.profile" value="simple" />
+      </Limitations>
+    </VideoCodec>
+    <VideoCodec name="mjpeg">
+      <Limitations>
+        <UpperBound name="video.width" value="1280" isRequired="true" />
+        <UpperBound name="video.height" value="720" isRequired="true" />
+        <UpperBound name="video.frameRate" value="30" />
+        <UpperBound name="video.bitrate" value="35000" />
+      </Limitations>
+    </VideoCodec>
+    <VideoAudioCodec name="aac">
+      <Limitations>
+        <LowerBound name="audio.bitrate" value="8" />
+        <UpperBound name="audio.bitrate" value="320" />
+        <UpperBound name="audio.channels" value="2" />
+      </Limitations>
+    </VideoAudioCodec>
+    <VideoAudioCodec name="mp3">
+      <Limitations>
+        <LowerBound name="audio.bitrate" value="8" />
+        <UpperBound name="audio.bitrate" value="320" />
+        <UpperBound name="audio.channels" value="2" />
+      </Limitations>
+    </VideoAudioCodec>
+    <VideoAudioCodec name="alac">
+      <Limitations>
+        <UpperBound name="audio.samplingRate" value="48000" />
+      </Limitations>
+    </VideoAudioCodec>
+    <VideoAudioCodec name="ac3">
+      <Limitations>
+        <UpperBound name="audio.channels" value="6" />
+      </Limitations>
+    </VideoAudioCodec>
+    <VideoAudioCodec name="eac3">
+      <Limitations>
+        <UpperBound name="audio.channels" value="8" />
+      </Limitations>
+    </VideoAudioCodec>
+  </CodecProfiles>
+</Client>

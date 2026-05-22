@@ -1,20 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROFILE_URL="${PROFILE_URL:-https://raw.githubusercontent.com/GeekStewie/tvOS-Profile-Plex/main/tvOS.xml}"
+PROFILE_NAME="${PROFILE_NAME:-tvOS}"
+PROFILE_FILE="${PROFILE_FILE:-${PROFILE_NAME}.xml}"
+PROFILE_URL="${PROFILE_URL:-https://raw.githubusercontent.com/GeekStewie/tvOS-Profile-Plex/main/${PROFILE_FILE}}"
 PLEX_SERVICE="${PLEX_SERVICE:-plexmediaserver}"
-DEFAULT_PROFILE="/usr/lib/plexmediaserver/Resources/Profiles/tvOS.xml"
+DEFAULT_PROFILE="/usr/lib/plexmediaserver/Resources/Profiles/${PROFILE_FILE}"
 
 usage() {
   cat <<'EOF'
-Install the tvOS Plex profile from GitHub.
+Install a Plex client profile from GitHub.
 
 Usage:
   curl -fsSL https://raw.githubusercontent.com/GeekStewie/tvOS-Profile-Plex/main/install.sh | sudo bash
+  curl -fsSL https://raw.githubusercontent.com/GeekStewie/tvOS-Profile-Plex/main/install.sh | sudo env PROFILE_NAME=iOS bash
 
 Environment overrides:
-  PROFILE_URL   URL to download tvOS.xml from
-  PROFILE_PATH  Exact tvOS.xml path to replace
+  PROFILE_NAME  Profile client name, default: tvOS
+  PROFILE_FILE  Profile file name, default: ${PROFILE_NAME}.xml
+  PROFILE_URL   URL to download the profile XML from
+  PROFILE_PATH  Exact profile path to replace
   PLEX_SERVICE  systemd service name, default: plexmediaserver
 EOF
 }
@@ -60,9 +65,9 @@ validate_profile() {
   local profile="$1"
   local token
 
-  grep -q '<Client name="tvOS">' "$profile" || die "downloaded file does not look like a tvOS Plex profile"
+  grep -q "<Client name=\"${PROFILE_NAME}\">" "$profile" || die "downloaded file does not look like a ${PROFILE_NAME} Plex profile"
 
-  for token in hevc mpeg4 mjpeg heif tiff flac alac; do
+  for token in $(required_tokens); do
     grep -q "$token" "$profile" || die "downloaded profile is missing expected token: $token"
   done
 
@@ -71,6 +76,31 @@ validate_profile() {
   else
     log "xmllint not found; skipped XML parser validation"
   fi
+}
+
+required_tokens() {
+  case "$PROFILE_NAME" in
+    tvOS)
+      printf '%s\n' hevc mpeg4 mjpeg heif tiff flac alac
+      ;;
+    iOS)
+      printf '%s\n' hevc mpeg4 mjpeg prores heif tiff flac alac aiff wav caf
+      ;;
+  esac
+}
+
+verify_pattern() {
+  case "$PROFILE_NAME" in
+    tvOS)
+      printf '%s\n' 'hevc|mpeg4|mjpeg|heif|tiff|flac|alac'
+      ;;
+    iOS)
+      printf '%s\n' 'hevc|mpeg4|mjpeg|prores|heif|tiff|flac|alac|aiff|wav|caf'
+      ;;
+    *)
+      printf '%s\n' 'Client name'
+      ;;
+  esac
 }
 
 find_profile_path() {
@@ -93,15 +123,15 @@ find_profile_path() {
     [[ -d "$base" ]] || continue
     while IFS= read -r found; do
       candidates+=("$found")
-    done < <(find "$base" -type f -path '*/Resources/Profiles/tvOS.xml' 2>/dev/null)
+    done < <(find "$base" -type f -path "*/Resources/Profiles/${PROFILE_FILE}" 2>/dev/null)
   done
 
   if [[ "${#candidates[@]}" -eq 0 ]]; then
-    die "could not locate tvOS.xml automatically; set PROFILE_PATH=/path/to/tvOS.xml"
+    die "could not locate ${PROFILE_FILE} automatically; set PROFILE_PATH=/path/to/${PROFILE_FILE}"
   fi
 
   if [[ "${#candidates[@]}" -gt 1 ]]; then
-    printf 'Found multiple tvOS.xml profiles:\n' >&2
+    printf 'Found multiple %s profiles:\n' "$PROFILE_FILE" >&2
     printf '  %s\n' "${candidates[@]}" >&2
     die "set PROFILE_PATH to the one you want to replace"
   fi
@@ -127,7 +157,7 @@ main() {
   TEMP_PROFILE="$(mktemp)"
   trap cleanup EXIT
 
-  log "Downloading tvOS profile from:"
+  log "Downloading ${PROFILE_NAME} profile from:"
   log "  $PROFILE_URL"
   download_profile "$TEMP_PROFILE"
   validate_profile "$TEMP_PROFILE"
@@ -155,9 +185,9 @@ main() {
     systemctl --no-pager --full status "$PLEX_SERVICE" || true
   fi
 
-  log "Installed updated tvOS Plex profile."
+  log "Installed updated ${PROFILE_NAME} Plex profile."
   log "Verify with:"
-  log "  grep -nE 'hevc|mpeg4|mjpeg|heif|tiff|flac|alac' '$profile_path'"
+  log "  grep -nE '$(verify_pattern)' '$profile_path'"
 }
 
 main "$@"
