@@ -50,6 +50,12 @@ download_profile() {
   die "curl or wget is required to download $PROFILE_URL"
 }
 
+cleanup() {
+  if [[ -n "${TEMP_PROFILE:-}" ]]; then
+    rm -f "$TEMP_PROFILE"
+  fi
+}
+
 validate_profile() {
   local profile="$1"
   local token
@@ -109,7 +115,6 @@ service_exists() {
 
 main() {
   local profile_path
-  local temp_profile
   local backup_path
 
   if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
@@ -119,13 +124,13 @@ main() {
 
   require_root
 
-  temp_profile="$(mktemp)"
-  trap 'rm -f "$temp_profile"' EXIT
+  TEMP_PROFILE="$(mktemp)"
+  trap cleanup EXIT
 
   log "Downloading tvOS profile from:"
   log "  $PROFILE_URL"
-  download_profile "$temp_profile"
-  validate_profile "$temp_profile"
+  download_profile "$TEMP_PROFILE"
+  validate_profile "$TEMP_PROFILE"
 
   profile_path="$(find_profile_path)"
   [[ -w "$(dirname "$profile_path")" ]] || die "profile directory is not writable: $(dirname "$profile_path")"
@@ -143,7 +148,7 @@ main() {
   fi
 
   cp -a "$profile_path" "$backup_path"
-  install -o root -g root -m 0644 "$temp_profile" "$profile_path"
+  install -o root -g root -m 0644 "$TEMP_PROFILE" "$profile_path"
 
   if service_exists; then
     systemctl start "$PLEX_SERVICE"
