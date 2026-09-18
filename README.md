@@ -4,9 +4,10 @@ This repository contains optimized Plex client profiles for **Apple TV 4K / tvOS
 
 The tvOS profile enables:
 
-- **Direct Play of H.264 and HEVC video up to 3840x2160 at 60 fps**
+- **Direct Play of H.264, HEVC, and AV1 video up to 3840x2160 at 60 fps**
 - **HEVC HDR/Dolby Vision, HDR10+, HDR10, and HLG passthrough where Plex reports compatible metadata**
-- **Legacy MPEG-4 Simple Profile and Motion JPEG support within Apple TV limits**
+- **AV1 hardware-accelerated decode (tvOS 27, Apple TV 4K 3rd Gen)**
+- **Legacy MPEG-4 Simple Profile support within Apple TV limits**
 - **AAC/HE-AAC, MP3, ALAC, FLAC, AIFF, WAV, AC3 5.1, and EAC3 7.1/Atmos audio support**
 - **HEIF, JPEG, GIF, and TIFF photo direct play**
 
@@ -15,10 +16,11 @@ HDMI Quick Media Switching and cinematic aspect-ratio handling are Apple TV disp
 The iOS profile enables:
 
 - **Direct Play of H.264 High Profile and HEVC Main 10 video up to 3840x2160 at 60 fps**
-- **MPEG-4 Simple Profile and Motion JPEG support within Apple legacy limits**
+- **AV1 hardware-accelerated decode (iOS 27, iPhone 17/18-class devices)**
+- **MPEG-4 Simple Profile support within Apple legacy limits**
 - **Apple ProRes direct play for supported Pro devices**
-- **AAC/HE-AAC, MP3, ALAC, FLAC, Linear PCM, AC3, and EAC3 audio support**
-- **MP4/M4V/MOV/3GP video containers, plus legacy AVI for M-JPEG**
+- **AAC/HE-AAC, MP3, ALAC (up to 24-bit/192 kHz), FLAC, Linear PCM, AC3, and EAC3 audio support**
+- **MP4/M4V/MOV/3GP video containers**
 - **MP3/M4A/WAV/AIFF/AU/CAF/FLAC audio containers**
 - **HEIF/HEIC, JPEG, PNG, GIF, and TIFF image direct play**
 
@@ -57,7 +59,7 @@ The installer downloads the latest `tvOS.xml`, locates the current Plex `tvOS.xm
 To verify the installed tvOS profile:
 
 ```bash
-grep -nE 'hevc|mpeg4|mjpeg|heif|tiff|flac|alac' /usr/lib/plexmediaserver/Resources/Profiles/tvOS.xml
+grep -nE 'hevc|av1|mpeg4|heif|tiff|flac|alac' /usr/lib/plexmediaserver/Resources/Profiles/tvOS.xml
 ```
 
 #### Install iOS Profile
@@ -73,7 +75,7 @@ The installer downloads the latest `iOS.xml`, locates the current Plex `iOS.xml`
 To verify the installed iOS profile:
 
 ```bash
-grep -nE 'hevc|mpeg4|mjpeg|prores|heif|tiff|flac|alac|aiff|wav|caf' /usr/lib/plexmediaserver/Resources/Profiles/iOS.xml
+grep -nE 'hevc|av1|mpeg4|prores|heif|tiff|flac|alac|aiff|wav|caf' /usr/lib/plexmediaserver/Resources/Profiles/iOS.xml
 ```
 
 If Plex is installed in a non-standard location, pass the target path explicitly:
