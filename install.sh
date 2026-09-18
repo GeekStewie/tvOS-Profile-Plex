@@ -81,10 +81,10 @@ validate_profile() {
 required_tokens() {
   case "$PROFILE_NAME" in
     tvOS)
-      printf '%s\n' hevc mpeg4 mjpeg heif tiff flac alac
+      printf '%s\n' hevc mpeg4 heif tiff flac alac
       ;;
     iOS)
-      printf '%s\n' hevc mpeg4 mjpeg prores heif tiff flac alac aiff wav caf
+      printf '%s\n' hevc mpeg4 prores heif tiff flac alac aiff wav caf
       ;;
   esac
 }
