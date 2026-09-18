@@ -17,10 +17,9 @@
 
   <DirectPlayProfiles>
     <!-- Plex reports .m4v and .m4a files as the MP4 container. -->
-    <VideoProfile container="mp4" codec="h264,hevc" audioCodec="aac,mp3,alac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <VideoProfile container="mp4" codec="h264,hevc,av1" audioCodec="aac,mp3,alac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
     <VideoProfile container="mov" codec="h264,hevc,prores" audioCodec="aac,mp3,alac,pcm,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
     <VideoProfile container="mp4,mov,3gp" codec="mpeg4" audioCodec="aac" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <VideoProfile container="mov,avi" codec="mjpeg" audioCodec="ulaw,pcm" />
     <VideoProfile protocol="hls" container="mpegts" codec="h264,hevc" audioCodec="aac,mp3,ac3,eac3" />
     <MusicProfile container="mp3" codec="mp3" />
     <MusicProfile container="mp4" codec="aac,alac" />
@@ -55,6 +54,14 @@
         <UpperBound name="video.bitDepth" value="10" />
       </Limitations>
     </VideoCodec>
+    <VideoCodec name="av1">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.frameRate" value="60" />
+        <UpperBound name="video.bitDepth" value="10" />
+      </Limitations>
+    </VideoCodec>
     <VideoCodec name="prores">
       <Limitations>
         <UpperBound name="video.width" value="3840" isRequired="true" />
@@ -70,14 +77,6 @@
         <UpperBound name="video.frameRate" value="30" />
         <UpperBound name="video.bitrate" value="2500" />
         <Match name="video.profile" value="simple" />
-      </Limitations>
-    </VideoCodec>
-    <VideoCodec name="mjpeg">
-      <Limitations>
-        <UpperBound name="video.width" value="1280" isRequired="true" />
-        <UpperBound name="video.height" value="720" isRequired="true" />
-        <UpperBound name="video.frameRate" value="30" />
-        <UpperBound name="video.bitrate" value="35000" />
       </Limitations>
     </VideoCodec>
     <VideoAudioCodec name="aac">
@@ -96,7 +95,7 @@
     </VideoAudioCodec>
     <VideoAudioCodec name="alac">
       <Limitations>
-        <UpperBound name="audio.samplingRate" value="48000" />
+        <UpperBound name="audio.samplingRate" value="192000" />
       </Limitations>
     </VideoAudioCodec>
     <VideoAudioCodec name="ac3">

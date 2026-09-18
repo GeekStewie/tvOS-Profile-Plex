@@ -15,10 +15,9 @@
 
   <DirectPlayProfiles>
     <!-- Plex reports .m4v files as the MP4 container. -->
-    <VideoProfile container="mp4" codec="h264,hevc" audioCodec="aac,ac3,eac3,mp3,alac,flac" subtitleCodec="mov_text,tx3g,ttxt,text" />
+    <VideoProfile container="mp4" codec="h264,hevc,av1" audioCodec="aac,ac3,eac3,mp3,alac,flac" subtitleCodec="mov_text,tx3g,ttxt,text" />
     <VideoProfile container="mov" codec="h264,hevc" audioCodec="aac,ac3,eac3,mp3,alac,flac,pcm" subtitleCodec="mov_text,tx3g,ttxt,text" />
     <VideoProfile container="mp4,mov" codec="mpeg4" audioCodec="aac" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <VideoProfile container="avi" codec="mjpeg" audioCodec="ulaw,pcm" />
     <!-- Allow Direct Play of HLS content -->
     <VideoProfile protocol="hls" container="mpegts" codec="h264,hevc" audioCodec="aac,ac3,eac3" />
     <MusicProfile container="mp3" codec="mp3" />
@@ -52,6 +51,14 @@
         <UpperBound name="video.bitDepth" value="10" />
       </Limitations>
     </VideoCodec>
+    <VideoCodec name="av1">
+      <Limitations>
+        <UpperBound name="video.width" value="3840" isRequired="true" />
+        <UpperBound name="video.height" value="2160" isRequired="true" />
+        <UpperBound name="video.frameRate" value="60" />
+        <UpperBound name="video.bitDepth" value="10" />
+      </Limitations>
+    </VideoCodec>
     <VideoCodec name="mpeg4">
       <Limitations>
         <UpperBound name="video.width" value="640" isRequired="true" />
@@ -59,14 +66,6 @@
         <UpperBound name="video.frameRate" value="30" />
         <UpperBound name="video.bitrate" value="2500" />
         <Match name="video.profile" value="simple" />
-      </Limitations>
-    </VideoCodec>
-    <VideoCodec name="mjpeg">
-      <Limitations>
-        <UpperBound name="video.width" value="1280" isRequired="true" />
-        <UpperBound name="video.height" value="720" isRequired="true" />
-        <UpperBound name="video.frameRate" value="30" />
-        <UpperBound name="video.bitrate" value="35000" />
       </Limitations>
     </VideoCodec>
     <VideoAudioCodec name="aac">
